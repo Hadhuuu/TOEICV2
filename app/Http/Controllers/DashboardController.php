@@ -12,6 +12,8 @@ use App\Models\MahasiswaProfile; // Import MahasiswaProfile
 use App\Models\HasilUjian; // Import HasilUjian
 use Carbon\Carbon;         // Import Carbon
 use Illuminate\Support\Facades\DB; // Import DB Facade
+use App\Models\JadwalPeserta; // Tambahkan ini
+use App\Models\Pengumuman;    // Tambahkan ini
 
 class DashboardController extends Controller
 {
@@ -93,15 +95,59 @@ class DashboardController extends Controller
      */
     public function mahasiswaDashboard(): View
     {
-        // Pastikan hanya mahasiswa yang bisa akses,
-        // idealnya menggunakan middleware
-        if (Auth::user()->role !== 'mahasiswa') {
+        $user = Auth::user();
+        if ($user->role !== 'mahasiswa') {
             abort(403, 'Unauthorized action.');
         }
-        $user = Auth::user();
-        // Di sini Anda bisa memuat data lain yang dibutuhkan mahasiswa
-        // contoh: status pendaftaran terakhir, jadwal ujian, dll.
-        return view('mahasiswa.dashboard', compact('user'));
+
+        // Load relasi yang mungkin sering diakses
+        $user->load(['mahasiswaProfile', 'pendaftarans' => function ($query) {
+            $query->latest()->first(); // Ambil pendaftaran terbaru saja
+        }]);
+
+        $pendaftaranTerbaru = $user->pendaftarans->first();
+        $jadwalPeserta = null;
+        $hasilUjian = null;
+
+        if ($pendaftaranTerbaru && $pendaftaranTerbaru->status === 'terverifikasi') {
+            // Cari jadwal peserta jika sudah terverifikasi
+            $jadwalPeserta = JadwalPeserta::with('jadwal')
+                ->where('user_id', $user->id)
+                ->where('pendaftaran_id', $pendaftaranTerbaru->id) // Hubungkan dengan pendaftaran spesifik
+                ->whereHas('jadwal', function($q){
+                    $q->where('tanggal_ujian_mulai', '>=', now()); // Hanya jadwal yang akan datang atau sedang berlangsung
+                })
+                ->orderBy('created_at', 'desc') // atau berdasarkan tanggal ujian
+                ->first();
+        }
+
+        if ($jadwalPeserta && in_array($jadwalPeserta->status, ['ujian_selesai', 'lulus', 'tidak_lulus'])) {
+            $hasilUjian = HasilUjian::where('user_id', $user->id)
+                                    ->where('jadwal_peserta_id', $jadwalPeserta->id) // Berdasarkan jadwal peserta
+                                    ->first();
+        } elseif ($pendaftaranTerbaru && $pendaftaranTerbaru->status === 'sudah_test_sebelumnya') {
+             // Jika statusnya sudah test sebelumnya, coba cari hasil ujian terakhir user tersebut
+            $hasilUjian = HasilUjian::where('user_id', $user->id)
+                                    ->orderBy('tanggal_ujian', 'desc')
+                                    ->first();
+        }
+
+
+        $pengumumanTerbaru = Pengumuman::where('is_published', true)
+            ->where(function ($query) { // Pengumuman umum atau terkait jadwal/hasil
+                $query->whereIn('jenis', ['pendaftaran', 'jadwal_ujian', 'hasil_ujian', 'pengambilan_sertifikat', 'lainnya']);
+            })
+            ->orderBy('tanggal_publish', 'desc')
+            ->take(3)
+            ->get();
+
+        return view('mahasiswa.dashboard', compact(
+            'user',
+            'pendaftaranTerbaru',
+            'jadwalPeserta',
+            'hasilUjian',
+            'pengumumanTerbaru'
+        ));
     }
     
 }
