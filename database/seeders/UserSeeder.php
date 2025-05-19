@@ -1,73 +1,80 @@
 <?php
 
-namespace Database\Seeders;
+namespace Database\Seeders; // [OKE] Namespace sudah benar
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash; // Import Hash
-use App\Models\User;                 // Import User model
-use App\Models\MahasiswaProfile;     // Import MahasiswaProfile model (jika ingin membuat profil sekaligus)
+use Illuminate\Support\Facades\Hash; // [OKE] Import Hash
+use App\Models\User;                 // [OKE] Import User model
+use App\Models\MahasiswaProfile;     // [OKE] Import MahasiswaProfile model
+use Carbon\Carbon;                   // [TAMBAHKAN INI] Import Carbon untuk manipulasi tanggal
 
-class UserSeeder extends Seeder
+class UserSeeder extends Seeder // [OKE] Nama class sudah benar
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        // Membuat Admin
-        $admin = User::create([
-            'name' => 'Admin User',
-            'email' => 'admin@example.com',
-            'password' => Hash::make('password'), // Ganti 'password' dengan password yang aman
-            'role' => 'admin',
-            'email_verified_at' => now(), // Anggap email sudah terverifikasi
-        ]);
-        // Anda bisa tambahkan pembuatan profile untuk admin jika perlu,
-        // tapi biasanya admin tidak memiliki 'mahasiswa_profile'.
+        // === BAGIAN YANG MUNGKIN TERLEWAT DARI CONTOH SEBELUMNYA ===
+        // Membuat Admin (PENTING untuk bisa login sebagai admin)
+        $admin = User::firstOrCreate(
+            ['email' => 'admin@example.com'], // Cari berdasarkan email
+            [
+                'name' => 'Admin User',
+                'password' => Hash::make('password123'), // Ganti password jika perlu
+                'role' => 'admin',
+                'email_verified_at' => now(),
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ]
+        );
 
-        // Membuat Mahasiswa 1
-        $mahasiswa1 = User::create([
-            'name' => 'Mahasiswa Satu',
-            'email' => 'mahasiswa1@example.com',
-            'password' => Hash::make('password'), // Ganti 'password' dengan password yang aman
-            'role' => 'mahasiswa',
-            'email_verified_at' => now(),
-        ]);
+        // === LOOP UNTUK MAHASISWA DUMMY (Sudah ada di kode Anda) ===
+        $kampusList = ['Utama', 'PSDKU Kediri', 'PSDKU Lumajang', 'PSDKU Pamekasan'];
+        $prodiList = [
+            'Teknik Informatika' => 'Teknologi Informasi',
+            'Sistem Informasi' => 'Teknologi Informasi',
+            'Manajemen Bisnis' => 'Bisnis dan Manajemen',
+            'Akuntansi' => 'Ekonomi dan Bisnis',
+            'Sastra Inggris' => 'Bahasa dan Sastra'
+        ];
+        $prodiKeys = array_keys($prodiList);
 
-        // Membuat profile untuk Mahasiswa 1 (sesuaikan dengan data di tabel mahasiswa_profiles)
-        MahasiswaProfile::create([
-            'user_id' => $mahasiswa1->id,
-            'nim' => '123456001',
-            'nik' => '1112223330001',
-            'no_wa' => '081234567891',
-            'alamat_asal' => 'Jl. Asal No. 1, Kota Asal',
-            'alamat_sekarang' => 'Jl. Sekarang No. 1, Kota Sekarang',
-            'program_studi' => 'Teknik Informatika',
-            'jurusan' => 'Teknologi Informasi',
-            'kampus' => 'Utama',
-        ]);
+        for ($i = 1; $i <= 50; $i++) { // Buat 50 mahasiswa dummy
+            // Gunakan firstOrCreate untuk menghindari duplikasi jika seeder dijalankan berkali-kali
+            $mahasiswa = User::firstOrCreate(
+                ['email' => 'mahasiswa' . $i . '@example.com'],
+                [
+                    'name' => 'Mahasiswa Dummy ' . $i,
+                    'password' => Hash::make('password'),
+                    'role' => 'mahasiswa',
+                    'email_verified_at' => now(),
+                    'created_at' => Carbon::now()->subDays(rand(0, 60)),
+                    'updated_at' => Carbon::now()->subDays(rand(0, 60)),
+                ]
+            );
 
-        // Membuat Mahasiswa 2 (opsional, untuk data lebih banyak)
-        $mahasiswa2 = User::create([
-            'name' => 'Mahasiswa Dua',
-            'email' => 'mahasiswa2@example.com',
-            'password' => Hash::make('password'),
-            'role' => 'mahasiswa',
-            'email_verified_at' => now(),
-        ]);
+            // Cek apakah profile sudah ada sebelum membuat (jika user sudah ada)
+            if (!$mahasiswa->mahasiswaProfile()->exists()) {
+                $selectedProdi = $prodiKeys[array_rand($prodiKeys)];
 
-        MahasiswaProfile::create([
-            'user_id' => $mahasiswa2->id,
-            'nim' => '123456002',
-            'nik' => '1112223330002',
-            'no_wa' => '081234567892',
-            'alamat_asal' => 'Jl. Merdeka No. 2, Kota Lama',
-            'alamat_sekarang' => 'Jl. Baru No. 2, Kota Baru',
-            'program_studi' => 'Sistem Informasi',
-            'jurusan' => 'Teknologi Informasi',
-            'kampus' => 'PSDKU Kediri',
-        ]);
+                MahasiswaProfile::create([
+                    'user_id' => $mahasiswa->id,
+                    'nim' => 'NIMDUMMY' . str_pad($i, 3, '0', STR_PAD_LEFT),
+                    'nik' => 'NIKDUMMY' . str_pad($i, 10, '0', STR_PAD_LEFT),
+                    'no_wa' => '08123000' . str_pad($i, 4, '0', STR_PAD_LEFT),
+                    'alamat_asal' => 'Alamat Asal Dummy ' . $i,
+                    'alamat_sekarang' => 'Alamat Sekarang Dummy ' . $i,
+                    'program_studi' => $selectedProdi,
+                    'jurusan' => $prodiList[$selectedProdi],
+                    'kampus' => $kampusList[array_rand($kampusList)],
+                    'created_at' => $mahasiswa->created_at, // Ambil dari created_at user
+                    'updated_at' => $mahasiswa->updated_at, // Ambil dari updated_at user
+                ]);
+            }
+        }
 
-        $this->command->info('User admin dan mahasiswa berhasil dibuat.');
+        // Pesan konfirmasi (opsional tapi baik)
+        $this->command->info('UserSeeder: User admin dan 50 mahasiswa dummy berhasil diproses/dibuat.');
     }
 }
