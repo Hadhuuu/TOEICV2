@@ -36,4 +36,5 @@ class DashboardController extends Controller
         // contoh: status pendaftaran terakhir, jadwal ujian, dll.
         return view('mahasiswa.dashboard', compact('user'));
     }
+    
 }
