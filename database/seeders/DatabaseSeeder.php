@@ -21,8 +21,9 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             UserSeeder::class,
-            // Anda bisa menambahkan seeder lain di sini jika ada
-            // Contoh: PendaftaranSeeder::class, JadwalSeeder::class, dll.
+            PendaftaranSeeder::class,
+            JadwalSeeder::class,
+            JadwalPesertaSeeder::class,
         ]);
     }
 }
