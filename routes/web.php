@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\HasilController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,7 +17,7 @@ use App\Http\Controllers\DashboardController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view(view: 'welcome');
 });
 
 Route::get('/dashboard', function () {
@@ -31,6 +32,10 @@ Route::middleware('auth')->group(function () {
         ->name('admin.dashboard');
     Route::get('/mahasiswa/dashboard', [DashboardController::class, 'mahasiswaDashboard'])
         ->name('mahasiswa.dashboard');
+
+    //input ambe kelola hasil
+    Route::get('/kelola-hasil', [HasilController::class, 'index'])->name('hasil.index');
+    Route::post('/kelola-hasil', [HasilController::class, 'store'])->name('hasil.store');
 
 
 });
