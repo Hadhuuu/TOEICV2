@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\MahasiswaProfile;
+use App\Models\Pendaftaran;
 
 class User extends Authenticatable // Mungkin juga implements MustVerifyEmail
 {
@@ -55,6 +56,16 @@ class User extends Authenticatable // Mungkin juga implements MustVerifyEmail
         // Argumen ketiga adalah local key di tabel users (defaultnya id)
         return $this->hasOne(MahasiswaProfile::class, 'user_id', 'id');
     }
-
+    /**
+     * Get all of the pendaftarans for the User.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function pendaftarans() // Nama method harus jamak (pendaftarans)
+    {
+        // Argumen kedua adalah foreign key di tabel 'pendaftarans' (defaultnya user_id)
+        // Argumen ketiga adalah local key di tabel 'users' (defaultnya id)
+        return $this->hasMany(Pendaftaran::class, 'user_id', 'id');
+    }
     // ... (method relasi lain jika ada, misal pendaftarans(), dll.)
 }

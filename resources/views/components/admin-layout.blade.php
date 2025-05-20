@@ -72,7 +72,7 @@
                         <span>Dashboard</span>
                     </a>
                     {{-- Link Kelola Pengumuman --}}
-                    <a href="#" class="sidebar-link flex items-center space-x-3 px-3 py-2.5 rounded-md text-sm font-medium transition-colors duration-150 {{-- request()->routeIs('admin.pengumuman.*') ? 'active' : '' --}}">
+                    <a href="#" class="sidebar-link flex items-center space-x-3 px-3 py-2.5 rounded-md text-sm font-medium transition-colors duration-150 {{ request()->routeIs('admin.pengumuman.*') ? 'active' : '' }}">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                         <span>Kelola Pengumuman</span>
                     </a>
@@ -85,7 +85,7 @@
                          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                         <span>Kelola Jadwal Ujian</span>
                     </a>
-                    <a href="#" class="sidebar-link flex items-center space-x-3 px-3 py-2.5 rounded-md text-sm font-medium transition-colors duration-150">
+                    <a href="{{ route('hasil.index') }}" class="sidebar-link flex items-center space-x-3 px-3 py-2.5 rounded-md text-sm font-medium transition-colors duration-150 {{ request()->routeIs('hasil.*') ? 'active' : '' }}">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
                         <span>Input/Kelola Hasil</span>
                     </a>
@@ -161,7 +161,7 @@
                     </div>
                 </main>
                  <footer class="text-center p-4 text-sm text-gray-500 dark:text-gray-400 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-800">
-                    &copy; {{ date('Y') }} TOEIC_V2. UPA Bahasa. All rights reserved.
+                    © {{ date('Y') }} TOEIC_V2. UPA Bahasa. All rights reserved.
                 </footer>
             </div>
         </div>
