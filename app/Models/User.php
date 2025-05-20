@@ -67,5 +67,10 @@ class User extends Authenticatable // Mungkin juga implements MustVerifyEmail
         // Argumen ketiga adalah local key di tabel 'users' (defaultnya id)
         return $this->hasMany(Pendaftaran::class, 'user_id', 'id');
     }
+
+    public function hasilUjians()
+    {
+        return $this->hasMany(HasilUjian::class);
+    }
     // ... (method relasi lain jika ada, misal pendaftarans(), dll.)
 }
