@@ -117,7 +117,7 @@
                     </div>
                 </header>
 
-                <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100 dark:bg-slate-800">
+                <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100 dark:bg-slate-900">
                     <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
                         @if (isset($header))
                             <div class="mb-6 text-gray-900 dark:text-gray-100">

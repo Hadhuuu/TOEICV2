@@ -148,7 +148,7 @@
                     </div>
                 </header>
 
-                <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100 dark:bg-slate-800"> {{-- Sedikit lebih terang dari bg-slate-900 --}}
+                <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100 dark:bg-slate-900"> {{-- Sedikit lebih terang dari bg-slate-900 --}}
                     <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
                         {{-- Slot untuk judul header dari view spesifik (di bawah navbar, di atas konten utama) --}}
                         @if (isset($header))
