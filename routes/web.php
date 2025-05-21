@@ -40,5 +40,41 @@ Route::middleware('auth')->group(function () {
 
 });
 
+// routes/web.php
+
+use App\Http\Controllers\Mahasiswa\PendaftaranController as MahasiswaPendaftaranController; // Alias agar tidak bentrok jika ada PendaftaranController lain
+
+Route::middleware(['auth'])->group(function () {
+    // ... (route dashboard mahasiswa lainnya) ...
+
+    Route::prefix('mahasiswa')->name('mahasiswa.')->group(function () {
+        // ... (route dashboard mahasiswa)
+        // Route::get('/dashboard', [DashboardController::class, 'mahasiswaDashboard'])->name('dashboard');
+
+        // Pendaftaran TOEIC Mahasiswa
+        Route::get('/pendaftaran-toeic', [MahasiswaPendaftaranController::class, 'create'])->name('pendaftaran.create');
+        Route::post('/pendaftaran-toeic', [MahasiswaPendaftaranController::class, 'store'])->name('pendaftaran.store');
+    });
+});
+
+// routes/web.php
+
+// ... (use statements lainnya)
+use App\Http\Controllers\Admin\UserController as AdminUserController; // Alias
+
+Route::middleware(['auth'])->group(function () {
+    // ... (route dashboard admin dan mahasiswa lainnya) ...
+
+    Route::prefix('admin')->name('admin.')->group(function () {
+        // Route::get('/dashboard', [DashboardController::class, 'adminDashboard'])->name('dashboard');
+        // ... (route admin lainnya jika ada) ...
+
+        // Manajemen User
+        Route::resource('users', AdminUserController::class);
+        // Ini akan otomatis membuat route untuk:
+        // admin.users.index, admin.users.create, admin.users.store,
+        // admin.users.show, admin.users.edit, admin.users.update, admin.users.destroy
+    });
+});
 
 require __DIR__.'/auth.php';
