@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HasilController;
+use App\Http\Controllers\Mahasiswa\PendaftaranController as MahasiswaPendaftaranController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,47 +41,17 @@ Route::middleware('auth')->group(function () {
     // Kelola hasil TOEIC
     Route::get('/kelola-hasil', [HasilController::class, 'index'])->name('hasil.index');
     Route::post('/kelola-hasil', [HasilController::class, 'store'])->name('hasil.store');
-});
 
-<<<<<<< HEAD
-// Rute auth bawaan Laravel Breeze atau Jetstream
-=======
-// routes/web.php
-
-use App\Http\Controllers\Mahasiswa\PendaftaranController as MahasiswaPendaftaranController; // Alias agar tidak bentrok jika ada PendaftaranController lain
-
-Route::middleware(['auth'])->group(function () {
-    // ... (route dashboard mahasiswa lainnya) ...
-
+    // Rute mahasiswa - Pendaftaran TOEIC
     Route::prefix('mahasiswa')->name('mahasiswa.')->group(function () {
-        // ... (route dashboard mahasiswa)
-        // Route::get('/dashboard', [DashboardController::class, 'mahasiswaDashboard'])->name('dashboard');
-
-        // Pendaftaran TOEIC Mahasiswa
         Route::get('/pendaftaran-toeic', [MahasiswaPendaftaranController::class, 'create'])->name('pendaftaran.create');
         Route::post('/pendaftaran-toeic', [MahasiswaPendaftaranController::class, 'store'])->name('pendaftaran.store');
     });
-});
 
-// routes/web.php
-
-// ... (use statements lainnya)
-use App\Http\Controllers\Admin\UserController as AdminUserController; // Alias
-
-Route::middleware(['auth'])->group(function () {
-    // ... (route dashboard admin dan mahasiswa lainnya) ...
-
+    // Rute admin - Manajemen User
     Route::prefix('admin')->name('admin.')->group(function () {
-        // Route::get('/dashboard', [DashboardController::class, 'adminDashboard'])->name('dashboard');
-        // ... (route admin lainnya jika ada) ...
-
-        // Manajemen User
         Route::resource('users', AdminUserController::class);
-        // Ini akan otomatis membuat route untuk:
-        // admin.users.index, admin.users.create, admin.users.store,
-        // admin.users.show, admin.users.edit, admin.users.update, admin.users.destroy
     });
 });
 
->>>>>>> 96d4551c58715d04a003255d87625a1e00bc5aaf
 require __DIR__.'/auth.php';
