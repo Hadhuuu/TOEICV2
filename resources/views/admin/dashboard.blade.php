@@ -201,9 +201,9 @@
                     legend: {
                         position: 'bottom',
                         labels: {
-                             color: document.body.classList.contains('dark') ? '#e5e7eb' : '#374151', // gray-200 (putih keabuan) untuk dark mode, gray-700 untuk light
+                             color: document.body.classList.contains('light') ? '#e5e7eb' : '#ffffff', // gray-200 (putih keabuan) untuk dark mode, gray-700 untuk light
                             font: {
-                                size: 17 // Ukuran font legenda jika perlu
+                                size: 15 // Ukuran font legenda jika perlu
                             },
                              boxWidth: 15,
                              padding: 15

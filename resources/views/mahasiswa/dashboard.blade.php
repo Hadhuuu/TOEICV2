@@ -42,7 +42,7 @@
                     @endif
                 </div>
                 @if (!$pendaftaranTerbaru || ($pendaftaranTerbaru && $pendaftaranTerbaru->status === 'ditolak'))
-                    <a href="#" class="bg-white text-blue-700 font-bold px-8 py-3 rounded-lg shadow-md hover:bg-gray-200 transition-transform transform hover:scale-105 whitespace-nowrap text-center">
+                    <a href="{{ route('mahasiswa.pendaftaran.create') }}" class="bg-white text-blue-700 font-bold px-8 py-3 rounded-lg shadow-md hover:bg-gray-200 transition-transform transform hover:scale-105 whitespace-nowrap text-center">
                         DAFTAR UJIAN TOEIC SEKARANG
                     </a>
                 @elseif($pendaftaranTerbaru)

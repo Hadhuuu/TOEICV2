@@ -89,8 +89,8 @@
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
                         <span>Input/Kelola Hasil</span>
                     </a>
-                    <a href="#" class="sidebar-link flex items-center space-x-3 px-3 py-2.5 rounded-md text-sm font-medium transition-colors duration-150">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                    <a href="{{ route('admin.users.index') }}" class="sidebar-link flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
                         <span>Manajemen User</span>
                     </a>
                 </nav>
@@ -148,7 +148,7 @@
                     </div>
                 </header>
 
-                <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100 dark:bg-slate-800"> {{-- Sedikit lebih terang dari bg-slate-900 --}}
+                <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100 dark:bg-slate-900"> {{-- Sedikit lebih terang dari bg-slate-900 --}}
                     <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
                         {{-- Slot untuk judul header dari view spesifik (di bawah navbar, di atas konten utama) --}}
                         @if (isset($header))
