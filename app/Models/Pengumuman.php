@@ -14,13 +14,14 @@ class Pengumuman extends Model
     protected $fillable = [
         'judul',
         'isi',
+        'file',
         'tanggal_publish',
         'jenis',
-        'is_published', // Sesuai migrasi terakhir kita
+        'is_published',
     ];
 
     protected $casts = [
-        'tanggal_publish' => 'datetime', // atau 'date' jika hanya tanggal
+        'tanggal_publish' => 'datetime',
         'is_published' => 'boolean',
     ];
 }

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HasilController;
+use App\Http\Controllers\PengumumanController;
 use App\Http\Controllers\Mahasiswa\PendaftaranController as MahasiswaPendaftaranController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 
@@ -52,6 +53,8 @@ Route::middleware('auth')->group(function () {
     Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('users', AdminUserController::class);
     });
-});
 
+    Route::get('/admin/pengumuman/create', [PengumumanController::class, 'create'])->name('admin.pengumuman.create');
+    Route::post('/pengumuman', [PengumumanController::class, 'store'])->name('pengumuman.store');
+});
 require __DIR__.'/auth.php';
