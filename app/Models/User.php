@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\MahasiswaProfile;
 use App\Models\Pendaftaran;
+use App\Models\HasilUjian;
 
 class User extends Authenticatable // Mungkin juga implements MustVerifyEmail
 {

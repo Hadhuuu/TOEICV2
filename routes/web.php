@@ -20,7 +20,7 @@ use App\Models\HasilUjian;
 
 Route::get('/', function () {
     return view(view: 'welcome');
-});
+]);
 
 Route::get('/dashboard', function () {
     return view('dashboard');

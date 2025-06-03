@@ -149,5 +149,4 @@ class DashboardController extends Controller
             'pengumumanTerbaru'
         ));
     }
-    
 }
