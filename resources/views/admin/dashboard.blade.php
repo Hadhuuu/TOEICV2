@@ -190,7 +190,7 @@
                         'rgba(245, 158, 11, 0.7)',  // yellow-500 (amber)
                         'rgba(139, 92, 246, 0.7)',  // violet-500
                     ],
-                    borderColor: document.body.classList.contains('dark') ? '#374151' : '#ffffff', // gray-700 or white
+                    borderColor: document.body.classList.contains('dark') ? '#ffffff' : '#9ca3af', // gray-700 or white
                     borderWidth: 2
                 }]
             },
