@@ -11,9 +11,10 @@
 
     {{-- Konten Utama Dashboard --}}
     <div class="space-y-8">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {{-- Card Section (Horizontal) --}}
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"> {{-- Diubah ke 3 kolom untuk 3 kartu --}}
             {{-- Card Total Pendaftar --}}
-            <div class="bg-gradient-to-br from-blue-500 to-indigo-600 p-6 rounded-xl shadow-lg text-white transform hover:scale-105 transition-transform duration-300">
+            <div class="bg-gradient-to-br from-blue-500 to-indigo-600 p-6 rounded-xl shadow-lg text-white transform hover:scale-105 transition-transform duration-300 **h-full flex flex-col justify-between**">
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm font-medium opacity-80">Total Pendaftar</p>
@@ -24,20 +25,8 @@
                     </div>
                 </div>
             </div>
-            {{-- Card Menunggu Verifikasi --}}
-            <div class="bg-gradient-to-br from-yellow-400 to-orange-500 p-6 rounded-xl shadow-lg text-white transform hover:scale-105 transition-transform duration-300">
-                 <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm font-medium opacity-80">Menunggu Verifikasi</p>
-                        <p class="text-3xl font-bold">{{ $pendaftarMenungguVerifikasi }}</p>
-                    </div>
-                    <div class="p-3 bg-white/20 rounded-full">
-                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
-                    </div>
-                </div>
-            </div>
             {{-- Card Jadwal Aktif --}}
-            <div class="bg-gradient-to-br from-green-500 to-teal-600 p-6 rounded-xl shadow-lg text-white transform hover:scale-105 transition-transform duration-300">
+            <div class="bg-gradient-to-br from-green-500 to-teal-600 p-6 rounded-xl shadow-lg text-white transform hover:scale-105 transition-transform duration-300 **h-full flex flex-col justify-between**">
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm font-medium opacity-80">Jadwal Ujian Aktif</p>
@@ -49,8 +38,8 @@
                 </div>
             </div>
             {{-- Card Peserta Sudah Ujian --}}
-            <div class="bg-gradient-to-br from-purple-500 to-pink-600 p-6 rounded-xl shadow-lg text-white transform hover:scale-105 transition-transform duration-300">
-                 <div class="flex items-center justify-between">
+            <div class="bg-gradient-to-br from-purple-500 to-pink-600 p-6 rounded-xl shadow-lg text-white transform hover:scale-105 transition-transform duration-300 **h-full flex flex-col justify-between**">
+                <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm font-medium opacity-80">Selesai Ujian (30hr)</p>
                         <p class="text-3xl font-bold">{{ $totalPesertaSudahUjian30Hari }}</p>
@@ -62,43 +51,24 @@
             </div>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
-            {{-- Chart Pendaftar Mingguan --}}
-            <div class="lg:col-span-3 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg h-80 md:h-96"> {{-- TAMBAHKAN CLASS TINGGI: misal h-80 (320px) atau h-96 (384px) --}}
-                <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-4">Pendaftar Baru (4 Minggu Terakhir)</h3>
-                <canvas id="pendaftarMingguanChart"></canvas>
-            </div>
-            {{-- Chart Distribusi Kampus --}}
-            <div class="lg:col-span-2 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
-                <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-4">Distribusi Pendaftar per Kampus</h3>
-                <canvas id="distribusiKampusChart" class="max-h-72 mx-auto"></canvas>
-            </div>
+        {{-- Chart Pendaftar Mingguan (Sekarang di baris terpisah) --}}
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg h-80 md:h-96">
+            <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-4">Pendaftar Baru (4 Minggu Terakhir)</h3>
+            <canvas id="pendaftarMingguanChart"></canvas>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {{-- Pendaftar Terbaru Menunggu Verifikasi --}}
-            <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
-                <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-4">Menunggu Verifikasi</h3>
-                <div class="space-y-3">
-                    @forelse ($pendaftarTerbaruMenunggu as $pendaftaran)
-                        <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-md hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
-                            <div>
-                                <p class="font-medium text-blue-600 dark:text-blue-400">{{ $pendaftaran->user->name }}</p>
-                                <p class="text-xs text-gray-500 dark:text-gray-400">{{ $pendaftaran->user->email }} - Daftar: {{ $pendaftaran->created_at->translatedFormat('d M Y, H:i') }}</p>
-                            </div>
-                            <a href="#" class="text-xs px-3 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded-full transition-colors">Detail</a>
-                        </div>
-                    @empty
-                        <p class="text-gray-500 dark:text-gray-400 text-sm">Tidak ada pendaftar yang menunggu verifikasi saat ini.</p>
-                    @endforelse
-                </div>
+            {{-- Chart Distribusi Kampus --}}
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg h-80 md:h-96 flex flex-col">
+                <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-4">Distribusi Pendaftar per Kampus</h3>
+                <canvas id="distribusiKampusChart" class="max-h-72 mx-auto flex-grow"></canvas>
             </div>
 
             {{-- Jadwal Ujian Terdekat --}}
-            <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg h-80 md:h-96">
                 <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-4">Jadwal Ujian Terdekat</h3>
-                <div class="space-y-3">
-                     @forelse ($jadwalTerdekat as $jadwal)
+                <div class="space-y-3 overflow-y-auto h-full">
+                    @forelse ($jadwalTerdekat as $jadwal)
                         <div class="p-3 bg-gray-50 dark:bg-gray-700 rounded-md">
                             <p class="font-medium text-indigo-600 dark:text-indigo-400">{{ $jadwal->lokasi }}</p>
                             <p class="text-sm text-gray-600 dark:text-gray-300">
@@ -138,7 +108,7 @@
                     label: 'Jumlah Pendaftar',
                     data: dataPendaftarMingguan,
                     backgroundColor: 'rgba(59, 130, 246, 0.6)', // blue-500
-                    borderColor: 'rgba(59, 130, 246, 1)',     // blue-500
+                    borderColor: 'rgba(59, 130, 246, 1)',    // blue-500
                     borderWidth: 1,
                     borderRadius: 8,
                 }]
@@ -158,12 +128,12 @@
                         }
                     },
                     x: {
-                         ticks: {
-                            color: document.body.classList.contains('dark') ? '#9ca3af' : '#6b7280',
-                        },
-                        grid: {
-                            display: false,
-                        }
+                            ticks: {
+                                color: document.body.classList.contains('dark') ? '#9ca3af' : '#6b7280',
+                            },
+                            grid: {
+                                display: false,
+                            }
                     }
                 },
                 plugins: {
@@ -201,12 +171,12 @@
                     legend: {
                         position: 'bottom',
                         labels: {
-                             color: document.body.classList.contains('light') ? '#e5e7eb' : '#ffffff', // gray-200 (putih keabuan) untuk dark mode, gray-700 untuk light
-                            font: {
-                                size: 15 // Ukuran font legenda jika perlu
-                            },
-                             boxWidth: 15,
-                             padding: 15
+                               color: document.body.classList.contains('dark') ? '#e5e7eb' : '#374151', // gray-200 for dark mode, gray-700 for light
+                               font: {
+                                   size: 15 // Ukuran font legenda jika perlu
+                               },
+                               boxWidth: 15,
+                               padding: 15
                         }
                     }
                 }
