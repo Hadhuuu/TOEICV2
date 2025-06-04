@@ -13,12 +13,13 @@ class HasilUjian extends Model
 
     protected $fillable = [
         'user_id',
-        'jadwal_peserta_id', // Sesuai migrasi terakhir kita
-        'nilai_listening',   // Sesuai migrasi terakhir kita
-        'nilai_reading',     // Sesuai migrasi terakhir kita
-        'nilai_total',       // Sesuai migrasi terakhir kita (menggantikan 'nilai')
+        'jadwal_peserta_id',
+        'nilai_listening',
+        'nilai_reading',
+        'nilai_total',
         'tanggal_ujian',
         'file_sertifikat_path',
+        // tambahkan kolom lain jika ada yang di-mass assign dari Excel
     ];
 
     protected $casts = [

@@ -7,6 +7,7 @@ use App\Http\Controllers\HasilController;
 use App\Http\Controllers\PengumumanController;
 use App\Http\Controllers\Mahasiswa\PendaftaranController as MahasiswaPendaftaranController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\Admin\HasilUjianImportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -58,3 +59,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/pengumuman', [PengumumanController::class, 'store'])->name('pengumuman.store');
 });
 require __DIR__.'/auth.php';
+
+Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+    // ... (route admin lainnya) ...
+
+    Route::get('hasil-ujian/import', [HasilUjianImportController::class, 'showImportForm'])->name('hasil_ujian.import.form');
+    Route::post('hasil-ujian/import', [HasilUjianImportController::class, 'importExcel'])->name('hasil_ujian.import.excel');
+});
