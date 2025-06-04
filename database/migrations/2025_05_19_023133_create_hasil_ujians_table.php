@@ -12,16 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('hasil_ujians', function (Blueprint $table) {
-            $table->id(); // Kolom id int [pk, increment]
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // Kolom user_id int [ref: > users.id]
-            // Menghubungkan ke entri jadwal peserta spesifik
+            $table->id();
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('jadwal_peserta_id')->nullable()->constrained('jadwal_peserta')->onDelete('set null');
-            $table->integer('nilai_listening')->nullable(); // Untuk mengakomodasi jika nilai dipisah
-            $table->integer('nilai_reading')->nullable();  // Untuk mengakomodasi jika nilai dipisah
-            $table->integer('nilai_total'); // Atau hanya nilai int jika nilai tunggal
-            $table->date('tanggal_ujian'); // Tanggal saat ujian dilaksanakan
-            $table->string('file_sertifikat_path')->nullable(); // Path ke file sertifikat
-            $table->timestamps(); // Kolom created_at dan updated_at
+            $table->integer('nilai_listening')->nullable();
+            $table->integer('nilai_reading')->nullable();
+            $table->integer('nilai_total');
+            $table->date('tanggal_ujian');
+            $table->string('file_sertifikat_path')->nullable();
+            $table->timestamps();
         });
     }
 
