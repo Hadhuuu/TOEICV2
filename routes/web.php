@@ -5,9 +5,12 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HasilController;
 use App\Http\Controllers\PengumumanController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Mahasiswa\PendaftaranController; 
 use App\Http\Controllers\Mahasiswa\PendaftaranController as MahasiswaPendaftaranController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\HasilUjianImportController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -24,12 +27,26 @@ Route::get('/', function () {
     return view('home'); // <- ini akan menampilkan home.blade.php
 });
 
+// Rute admin - Manajemen User
+    Route::prefix('admin')->name('admin.')->group(function () {
+        Route::resource('users', UserController::class);
+    });
+
+    
+
+Route::prefix('mahasiswa')->name('mahasiswa.')->group(function () {
+    Route::get('/exam-results', [ExamResultController::class, 'index'])->name('exam-results.index');
+});
+
+
+
+
 // ✅ Dashboard default Laravel (butuh login dan verifikasi email)
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-// ✅ Rute yang hanya bisa diakses setelah login
+// Rute yang hanya bisa diakses setelah login
 Route::middleware('auth')->group(function () {
     // Profil pengguna
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -43,21 +60,8 @@ Route::middleware('auth')->group(function () {
     // Kelola hasil TOEIC
     Route::get('/kelola-hasil', [HasilController::class, 'index'])->name('hasil.index');
     Route::post('/kelola-hasil', [HasilController::class, 'store'])->name('hasil.store');
-
-    // Rute mahasiswa - Pendaftaran TOEIC
-    Route::prefix('mahasiswa')->name('mahasiswa.')->group(function () {
-        Route::get('/pendaftaran-toeic', [MahasiswaPendaftaranController::class, 'create'])->name('pendaftaran.create');
-        Route::post('/pendaftaran-toeic', [MahasiswaPendaftaranController::class, 'store'])->name('pendaftaran.store');
-    });
-
-    // Rute admin - Manajemen User
-    Route::prefix('admin')->name('admin.')->group(function () {
-        Route::resource('users', AdminUserController::class);
-    });
-
-    Route::get('/admin/pengumuman/create', [PengumumanController::class, 'create'])->name('admin.pengumuman.create');
-    Route::post('/pengumuman', [PengumumanController::class, 'store'])->name('pengumuman.store');
 });
+
 require __DIR__.'/auth.php';
 
 Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
